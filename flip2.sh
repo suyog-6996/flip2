@@ -8,7 +8,7 @@ num=$1
 number=$2
 key=""
 
-declare -A combination
+declare -A combinations
 
 for (( i=0;i<$number;i++ ))
 do
@@ -25,12 +25,12 @@ do
 	fi
 	done
 
-	combination[$key]=$(( ${combination[$key]} + 1 ))
+	combinations[$key]=$(( ${combinations[$key]} + 1 ))
 	key=""
 
 done
 
-	percentage ${!combination[@]}
+	percentage ${!combinations[@]}
 }
 
 function percentage(){
@@ -40,15 +40,17 @@ echo
 
 for i in $result
 do
-	j=${combination[$i]}
+
+	j=${combinations[$i]}
 	echo "$i	 $(( ($j * 100 ) / $number ))"
-done
+
+done | sort -k2 -nr | awk 'NR==1{print $1" "$2}'
 }
 
 function main()
 {
 
-read -p "Enter your choice: 1.SingletCOMB 2.DoubletCOMB 3.TripletCOMB " coin
+read -p "Enter your choice: 1.SingletCoin 2.DoubletCoin 3.TripletCoin " coin
 read -p "Enter How Many Times You Want to Flip " number
 
 	case $coin in
